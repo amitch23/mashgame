@@ -1,0 +1,242 @@
+<html>
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<style>
+
+body {
+background: url('../img/paper.jpg');
+/*background-color: green;
+*/font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+margin: 0;
+background-color: #F8ECC9;
+}
+
+h1 {
+	margin: auto;
+	color: #F56991;
+	font-size: 45px;
+	padding: 10px 0px 20px 0px;
+
+}
+h2 {
+	color: #F56991;
+	font-size: 20px;
+
+}
+h3 {
+	color: #EFFAB4;
+	font-size: 18px;
+
+}
+
+
+
+p {
+	color: #fff;
+	width: 400px;
+	margin: auto;
+	text-align: left;
+	font-size: 16px;
+}
+
+#main_wrapper {
+
+/*	background: url("/static/paper.jpg");
+*/
+
+	width: 1000px;
+	height: auto;
+	background-color: #FFC48C;
+	text-align: center;
+	overflow: hidden;
+	margin: auto;
+	moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+
+}
+
+#rt_upper, #rt_lower {
+
+/*	position: absolute;
+*/	width: 200px;
+float: right;
+padding: 20px;
+
+
+/*	border: 1px solid black;
+*/
+	
+	}
+
+#lft_upper, #lft_lower{
+
+width: 200px;
+float: left;
+/*background-color: blue;
+*/padding: 20px;
+/*border: 1px solid black;
+*/}
+
+#left {
+
+	width: 300px;
+/*	background-color: blue;
+*/}
+
+
+#right {
+
+	width: 250px;
+	float: right;
+	overflow: hidden;
+/*	background: red;
+
+*/	margin-top: -280px;
+	padding: 20px;
+}
+
+div.clear{
+
+	clear: both;
+}
+}
+input{
+
+	margin: 20px;
+	padding: 30px;
+
+}
+
+
+#get_with_ajax
+{
+  padding:10px;
+  background-color: #FF9F80;
+  color:#fff;
+  text-decoration:none;
+  moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  font-size: 15px;
+  margin: -10px 0px 0px 0px;
+
+}
+
+.pad {
+moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+	padding: 5px;
+	margin: 4px;
+}
+
+#output {
+background: url("/static/paper.jpg");
+width: 450px;
+height: 400px;
+margin-top: -200px;
+float: left;
+
+}
+
+#output p {
+color: #585858;
+font-size:23px;
+font-family: optima, Lucida;
+margin-top: 0px;
+line-height: 214%;
+}
+
+</style>
+</head>
+
+
+
+<body>
+<div id="main_wrapper">
+
+<h1> M.A.S.H.</h1>
+<!-- <h3> (Mansion, Apartment, Shack, House)</h3>
+ -->
+<p>Bad case of fomo? You've come to the right place. Let your imagination run wild then click the button on the right to see your future unfold. </p>
+
+<div id ="left">
+<form id="mash_form" action="/select">
+
+	<div id = "lft_upper">
+	<h2>Life partner</h2>
+	<input class="pad" type="text" id="namecontent" name="name1"></input> 
+	<input class="pad" type="text" id="namecontent" name="name2"></input> 
+	<input class="pad" type="text" id="namecontent" name="name3"></input> 
+	<input class="pad" type="text" id="namecontent" name="name4"></input> 
+	</div>
+
+	<div id = "lft_lower">
+	<h2>Occupation</h2>
+	<input class="pad"type="text" id="namecontent" name="job1"></input> 
+	<input class="pad"type="text" id="namecontent" name="job2"></input> 
+	<input class="pad"type="text" id="namecontent" name="job3"></input> 
+	<input class="pad"type="text" id="namecontent" name="job4"></input> 
+	</div>
+
+</div>
+
+
+<div id="output"></div>
+
+
+<div id ="right">
+
+
+<button type='button' id="get_with_ajax"> Determine my future.</button>
+
+	<div id = "rt_upper">
+	<h2>Vehicle</h2>
+	<input class="pad" type="text" id="namecontent" name="car1"></input> 
+	<input class="pad" type="text" id="namecontent" name="car2"></input> 
+	<input class="pad" type="text" id="namecontent" name="car3"></input> 
+	<input class="pad" type="text" id="namecontent" name="car4"></input>
+<!-- 
+	<input type="checkbox" name="prefer_bike"> --> 
+	</div>
+
+	<div id = "rt_lower">
+	<h2>City</h2>
+	<input class="pad" type="text" id="namecontent" name="city1"></input> 
+	<input class="pad" type="text" id="namecontent" name="city2"></input> 
+	<input class="pad" type="text" id="namecontent" name="city3"></input> 
+	<input class="pad" type="text" id="namecontent" name="city4"></input> 
+	</div>
+
+</div>
+
+</div> <!--main wrapper -->
+
+</form>
+
+<script> 
+// $.get(url, successfunction)
+
+
+$("#get_with_ajax").click(function (event) {
+
+	// prevent default rendering of form and refreshing page
+	event.preventDefault();
+	// alert("hey");
+
+	var url = "/select?" + $("#mash_form").serialize();
+	console.log(url);
+
+	$("#output").load(url);
+
+})
+
+
+//to refresh the page and render the template, give the form an action of the url in the flask file and the button type="submit". In the flask file app handler, return the html form, request.args.get with the name of the inputs, and pass the parameters to be referenced in the html template. This will load a different html page in the browser.
+
+//to use ajax to output the text/image in the same page without refreshing, reference the button id and call an event listener on "click". Prevent default behaviour, then set the variable equal to the url with a '?' (why?) added to form id and serialize, which creates a url encoded text string. Then load the content of the url in the div id where you want it.
+
+
+</script>
+
+</body>
+</html>
